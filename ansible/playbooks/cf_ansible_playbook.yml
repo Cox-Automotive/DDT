@@ -1,0 +1,132 @@
+  ---
+- name: Run evm git automate update
+  hosts: "{{hosts}}"
+  gather_facts: False
+  tasks:
+    - name: Init for first time use
+      shell: source /etc/default/evm && bin/rake evm:git:project:init BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - init
+
+    - name: Reset automate project
+      shell: source /etc/default/evm && bin/rake evm:git:project:reset BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - reset
+
+    - name: Update automate project
+      shell: source /etc/default/evm && bin/rake evm:git:project:update BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - update_project
+
+    - name: Restore automate project
+      shell: source /etc/default/evm && bin/rake evm:git:project:restore BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - restore_project
+
+    - name: Update git/automate model
+      shell: source /etc/default/evm && bin/rake evm:git:automate:update BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - update_automate
+
+    - name: Export automate model to git
+      shell: source /etc/default/evm && bin/rake evm:git:automate:export BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - export_automate
+
+    - name: Restore automate model from git
+      shell: source /etc/default/evm && bin/rake evm:git:automate:restore BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - restore_automate
+
+    - name: Export custom buttons to git
+      shell: source /etc/default/evm && bin/rake evm:git:buttons:export BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - export_buttons
+
+    - name: Update custom buttons to git
+      shell: source /etc/default/evm && bin/rake evm:git:buttons:update BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - update_buttons
+
+    - name: Restore custom buttons to git
+      shell: source /etc/default/evm && bin/rake evm:git:buttons:restore BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - restore_buttons
+
+    - name: Export custom buttons to git
+      shell: source /etc/default/evm && bin/rake evm:git:dialogs:export BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - export_dialogs
+
+    - name: Update custom buttons to git
+      shell: source /etc/default/evm && bin/rake evm:git:dialogs:update BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - update_dialogs
+
+    - name: Restore custom buttons to git
+      shell: source /etc/default/evm && bin/rake evm:git:dialogs:restore BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - restore_dialogs
+
+    - name: Export tags to git
+      shell: source /etc/default/evm && bin/rake evm:git:tags:export BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - export_tags
+
+    - name: Update tags from git
+      shell: source /etc/default/evm && bin/rake evm:git:tags:update BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - update_tags
+
+    - name: Restore tags from git
+      shell: source /etc/default/evm && bin/rake evm:git:tags:restore BASE_DIR="{{base_dir}}" REPO="{{repo}}" URI="{{uri}}" BRANCH="{{branch}}" LOG_FILE="{{log_file}}"
+      args:
+        chdir: /var/www/miq/vmdb/
+        executable: /bin/bash
+      tags:
+        - restore_tags

@@ -1,0 +1,18 @@
+---
+ssh:
+  username: 
+  password: 
+  path_to_rsa: 
+ansible:
+  tower: localhost:4443
+  username:
+  token:
+  password:
+  git_credential: cloudforms_git_login
+  ssh_credential: cloudforms_ssh_login
+  inventory: cloudforms_inventory
+  project: cloudforms_git_main_project
+  playbook: ansible/playbooks/playbook.yml
+  job_template: cloudforms_job_template
+  organization: Default
+  path_to_rsa:

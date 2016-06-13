@@ -1,0 +1,104 @@
+#!/usr/bin/env ruby
+
+# Add the local lib directory
+$:.unshift(File.expand_path(File.dirname(__FILE__) + './lib')) unless
+    $:.include?(File.dirname(__FILE__) + '.lib') || $:.include?(File.expand_path(File.dirname(__FILE__) + '.lib'))
+
+require 'git'
+require 'cf_ddt'
+require 'cf_ddt/cf_option'
+require 'cf_ddt/cf_git'
+require 'cf_ddt/ansible'
+
+#TODO: maine utility will read options
+#TODO: manage git operations, i.e. git pull after export from automate model
+#TODO: init projects
+#TODO: pull after job
+
+class Runner
+
+   include(CfDdt)
+
+  def initialize(args)
+
+    @parser       = CfOption.new
+    @config       = build_config_data args
+
+    # to hashes in config file, ansible and ssh. If using ansible i.e. CfDdt ansible etc,
+    # use ansible hash and load operation as appropriate
+    # if using ssh do that (needs more thinking)
+    # else report error
+
+    if @config.ansible
+      @ansible  = Ansible.new(@config)
+    elsif @config.ssh
+      @ssh      = Ssh.new @config
+    else
+      log 'ERROR', 'Need to specify ssh or ansible'
+    end
+
+    git_environment
+
+  end
+
+   def git_environment
+     @git               = CfGit.new(@config.ide_project_root)
+     @config.branch     = @git.current_branch
+     @config.git_url    = @git.url
+     @config.repo       = @config.git_url.split('/').last
+   end
+
+   def build_config_data(args)
+     args          = handler(args.join(' '), options.base)
+     config        = OpenStruct.new @parser.parse(options.base, args)
+     project_root  = config.project_root
+
+     # Two hashes exist: ssh and ansible
+     default_config_dir  = "#{project_root}/CfDdt"
+     default_config_file = 'config.yml'
+
+     if config.config_file && config.ansible
+       config           = OpenStruct.new import_from_file(config.config_file)['ansible'].merge(config.to_h)
+     elsif config.gen_config_file
+
+       system("mkdir -p #{project_root}/CfDdt")
+       write_to_file("#{project_root}/cf_ddt/config.yml", config_file)
+       exit 0
+
+     elsif File.directory?(default_config_dir) && File.exists?("#{default_config_dir}/#{default_config_file}")
+
+       config             = import_from_file("#{default_config_dir}/#{default_config_file}").merge(config.to_h)
+       config.config_file = "#{default_config_dir}/#{default_config_file}"
+     else
+       log('ERROR', 'Config file ( --config_file ) must be supplied. Use --gen_config_file to generate a new config file.')
+     end
+
+     return config
+   end
+
+  def run
+    if @config.gen_config_file
+      write_to_file('./ansible_config.yml', config_file)
+    elsif @config.ansible
+      if @config.ansible == 'setup'
+        @ansible.init_new
+      else
+        log 'INFO', "Running operation #{@config.ansible}"
+        @ansible.execute
+      end
+    elsif @config.operation == 'help'
+      #help = Help.new(@config)
+      #help.display
+      puts 'Help me please!'
+    else
+      @ansible.execute
+      log('INFO', 'Pulling changes')
+      @git.pull
+    end
+  end
+
+
+
+end
+@runner = Runner.new(ARGV)
+@runner.run
