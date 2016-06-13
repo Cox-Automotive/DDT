@@ -1,5 +1,39 @@
 # DDT
 
+CF DDT is a tool developed to bring ManageIQ/Cloudforms into a true agile, CI/CD environment. The tool helps address the common challenges and pitfalls when customizing ManageIQ/Cloudforms in an agile environment while leveraging a CI/CD strategy. 
+
+The main tools employed are ManageIQ/Cloudforms, RubyMine, Git (Bitbucket), Ansible and custom developed helper tools to facilitate integration among these. 
+
+## At a glance
+
+Checkout your git repo
+
+    $ git clone https://user@github.com/this-does-not-exist.git
+
+Initiate Project on ManageIQ appliance
+
+    $ cf_ddt config_file /path/to/your/config.yml ide_project_root /path/to/your/git/this-does-not-exist hosts manageiq-ui.example.com ansible init
+
+Export Datastore from ManageIQ and push to git
+
+    $ cf_ddt config_file /path/to/your/config.yml ide_project_root /path/to/your/git/this-does-not-exist hosts manageiq-ui.example.com ansible export_automate
+
+Once you have a successful run, git pull from your IDE or execute git pull from the command line. You will see a folder structure like this 
+
+-- Datastore
+   |
+   --- CloudForms_Essentials
+   |
+   --- ManageIQ
+   |
+   --- RedHat
+   
+Add,update,delete a method, class or instance, commit and push your changes. Then, update ManageIQ/Cloudforms:
+
+    $ cf_ddt config_file /path/to/your/config.yml ide_project_root /path/to/your/git/this-does-not-exist hosts manageiq-ui.example.com ansible update_automate
+
+Changes will be picked up and available for UI, testing, etc.
+
 ## Dependencies
 
 Cloudforms 3.x, 4.x
