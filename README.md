@@ -1,6 +1,6 @@
 # DDT
 
-CF DDT is a tool developed to bring ManageIQ/Cloudforms into a true agile, CI/CD environment. The tool helps address the common challenges and pitfalls when customizing ManageIQ/Cloudforms in an agile environment while leveraging a CI/CD strategy. 
+CF DDT is a tool developed to bring ManageIQ (https://github.com/ManageIQ/manageiq)/Cloudforms into a true agile, CI/CD environment. The tool helps address the common challenges and pitfalls when customizing ManageIQ/Cloudforms in an agile environment while leveraging a CI/CD strategy. 
 
 The main tools employed are ManageIQ/Cloudforms, RubyMine, Git (Bitbucket), Ansible and custom developed helper tools to facilitate integration among these. 
 
